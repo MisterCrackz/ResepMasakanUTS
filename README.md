@@ -64,8 +64,7 @@ Proyek ini dibangun dengan mematuhi prinsip Pemrograman Berorientasi Objek, khus
 
 Proyek ini dibuat dan dikumpulkan untuk Ujian Tengah Semester (UTS):
 
-* **Nama:** **[Nama Lengkap Anda]**
-* **NPM:** **[NPM Anda]**
+* **Nama:** **[Rehan Muhammad Akbar]**
+* **NPM:** **[2310010693]**
 * **Mata Kuliah:** Pemrograman Berorientasi Objek 2
-* **Dosen:** **[Nama Dosen Anda]**
-* **Universitas:** **[Nama Universitas Anda]**
+* **Universitas:** **[Universitas Islam Kalimantan Muhammad Arsyad Al-Banjari (Uniska)]**
