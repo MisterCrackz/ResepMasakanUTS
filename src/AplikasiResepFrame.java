@@ -1,96 +1,206 @@
 import javax.swing.*;
+import javax.swing.border.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 
 public class AplikasiResepFrame extends javax.swing.JFrame {
 
-    // <-- BAGIAN INI HILANG (Variabel untuk Controller & JList Model)
     private ManajemenResep manajer;
     private DefaultListModel<Resep> listModel;
 
-    /**
-     * Creates new form AplikasiResepFrame
-     */
     public AplikasiResepFrame() {
         initComponents();
+        setupModernUI();
         
-        // <-- BAGIAN INI HILANG (Logika Inisialisasi Kustom)
-        // 1. Buat Manajer (Controller)
+        // Inisialisasi Manajer
         manajer = new ManajemenResep();
         
-        // 2. Siapkan model untuk JList
+        // Setup model untuk JList
         listModel = new DefaultListModel<>();
-        jListResep.setModel(listModel); // Hubungkan listModel ke jListResep
+        jListResep.setModel(listModel);
         
-        // 3. Matikan tombol Update/Hapus (UX yang baik)
+        // Matikan tombol Update/Hapus
         btnUpdate.setEnabled(false);
         btnHapus.setEnabled(false);
 
-        // 4. Tambahkan EVENT LISTENER untuk JList
-        // Ini akan "mendengar" setiap kali kita mengklik item di daftar
+        // Event listener untuk JList
         jListResep.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    // Panggil method helper kita
                     jListResepValueChanged();
                 }
             }
         });
         
-        // 5. Atur Window di tengah layar
+        // Window di tengah layar
         this.setLocationRelativeTo(null);
     }
     
-    // <-- SEMUA METHOD HELPER DI BAWAH INI HILANG -->
+    /**
+     * Setup Modern UI - Menambahkan styling modern pada komponen
+     */
+    private void setupModernUI() {
+        // Set Color Scheme Modern
+        Color primaryColor = new Color(41, 128, 185);      // Biru modern
+        Color secondaryColor = new Color(52, 152, 219);    // Biru terang
+        Color accentColor = new Color(46, 204, 113);       // Hijau
+        Color dangerColor = new Color(231, 76, 60);        // Merah
+        Color warningColor = new Color(243, 156, 18);      // Orange
+        Color backgroundColor = new Color(236, 240, 241);   // Abu-abu terang
+        Color cardColor = Color.WHITE;
+        
+        // Set background utama
+        getContentPane().setBackground(backgroundColor);
+        
+        // Style untuk JList
+        jListResep.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        jListResep.setBackground(cardColor);
+        jListResep.setSelectionBackground(secondaryColor);
+        jListResep.setSelectionForeground(Color.WHITE);
+        jListResep.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        jListResep.setFixedCellHeight(40);
+        
+        // Custom renderer untuk JList agar lebih menarik
+        jListResep.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, 
+                    int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(
+                        list, value, index, isSelected, cellHasFocus);
+                
+                label.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)),
+                    BorderFactory.createEmptyBorder(8, 12, 8, 12)
+                ));
+                
+                if (isSelected) {
+                    label.setBackground(secondaryColor);
+                    label.setForeground(Color.WHITE);
+                } else {
+                    label.setBackground(cardColor);
+                    label.setForeground(new Color(44, 62, 80));
+                }
+                
+                return label;
+            }
+        });
+        
+        // Style ScrollPane untuk JList
+        jScrollPane1.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(189, 195, 199), 1),
+            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        jScrollPane1.getViewport().setBackground(cardColor);
+        
+        // Style untuk Text Field
+        txtJudul.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        txtJudul.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(189, 195, 199), 1),
+            BorderFactory.createEmptyBorder(8, 12, 8, 12)
+        ));
+        
+        // Style untuk Text Areas
+        Font textAreaFont = new Font("Segoe UI", Font.PLAIN, 13);
+        
+        areaBahan.setFont(textAreaFont);
+        areaBahan.setLineWrap(true);
+        areaBahan.setWrapStyleWord(true);
+        areaBahan.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
+        
+        areaInstruksi.setFont(textAreaFont);
+        areaInstruksi.setLineWrap(true);
+        areaInstruksi.setWrapStyleWord(true);
+        areaInstruksi.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
+        
+        // Style ScrollPane untuk TextAreas
+        jScrollPane2.setBorder(BorderFactory.createLineBorder(new Color(189, 195, 199), 1));
+        jScrollPane3.setBorder(BorderFactory.createLineBorder(new Color(189, 195, 199), 1));
+        
+        // Style untuk Labels
+        Font labelFont = new Font("Segoe UI", Font.BOLD, 12);
+        Color labelColor = new Color(52, 73, 94);
+        
+        jLabel1.setFont(labelFont);
+        jLabel1.setForeground(labelColor);
+        jLabel2.setFont(labelFont);
+        jLabel2.setForeground(labelColor);
+        jLabel3.setFont(labelFont);
+        jLabel3.setForeground(labelColor);
+        
+        // Style untuk Header
+        jLabel4.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        jLabel4.setForeground(primaryColor);
+        
+        // Style untuk Buttons dengan warna berbeda
+        styleButton(btnTambah, accentColor, "✓ ");
+        styleButton(btnUpdate, warningColor, "⟳ ");
+        styleButton(btnHapus, dangerColor, "✕ ");
+        styleButton(btnImpor, primaryColor, "📥 ");
+        styleButton(btnEkspor, primaryColor, "📤 ");
+        styleButton(btnClear, new Color(149, 165, 166), "⌫ ");
+    }
     
     /**
-     * Dipanggil saat item di JList diklik.
-     * Tugas: Ambil data resep yg diklik, tampilkan di field kanan.
+     * Method helper untuk styling button
      */
+    private void styleButton(JButton button, Color bgColor, String icon) {
+        button.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        button.setBackground(bgColor);
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        button.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+        
+        // Tambahkan icon di teks
+        String originalText = button.getText();
+        if (!originalText.startsWith(icon)) {
+            button.setText(icon + originalText);
+        }
+        
+        // Hover effect
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(bgColor.brighter());
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(bgColor);
+            }
+        });
+    }
+    
     private void jListResepValueChanged() {
         int selectedIndex = jListResep.getSelectedIndex();
         
-        if (selectedIndex != -1) { // Jika ada item yg dipilih
+        if (selectedIndex != -1) {
             Resep resepTerpilih = listModel.getElementAt(selectedIndex);
             
-            // Masukkan datanya ke text field
             txtJudul.setText(resepTerpilih.getJudul());
             areaBahan.setText(resepTerpilih.getBahan());
             areaInstruksi.setText(resepTerpilih.getInstruksi());
             
-            // Aktifkan tombol Update & Hapus
             btnUpdate.setEnabled(true);
             btnHapus.setEnabled(true);
         } else {
-            // Jika tidak ada yg dipilih (misal setelah hapus)
             btnUpdate.setEnabled(false);
             btnHapus.setEnabled(false);
         }
     }
     
-    /**
-     * Tugas: Mengosongkan semua field input.
-     */
     private void clearFields() {
         txtJudul.setText("");
         areaBahan.setText("");
         areaInstruksi.setText("");
-        jListResep.clearSelection(); // Hapus seleksi di JList
+        jListResep.clearSelection();
     }
 
-    /**
-     * Tugas: Sinkronkan JList dengan data terbaru dari 'Manajer'.
-     */
     private void updateList() {
-        listModel.clear(); // 1. Kosongkan JList
-        
-        // 2. Minta data terbaru ke Manajer
+        listModel.clear();
         ArrayList<Resep> daftar = manajer.getDaftarResep();
-        
-        // 3. Isi JList dengan data baru
         for (Resep r : daftar) {
             listModel.addElement(r);
         }
@@ -265,13 +375,17 @@ public class AplikasiResepFrame extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {                                          
-        String judul = txtJudul.getText();
-        String bahan = areaBahan.getText();
-        String instruksi = areaInstruksi.getText();
+   private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        String judul = txtJudul.getText().trim();
+        String bahan = areaBahan.getText().trim();
+        String instruksi = areaInstruksi.getText().trim();
         
         if (judul.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Judul resep tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, 
+                "Judul resep tidak boleh kosong!", 
+                "Validasi Error", 
+                JOptionPane.WARNING_MESSAGE);
+            txtJudul.requestFocus();
             return;
         }
         
@@ -280,32 +394,53 @@ public class AplikasiResepFrame extends javax.swing.JFrame {
         
         updateList(); 
         clearFields(); 
-        JOptionPane.showMessageDialog(this, "Resep '" + judul + "' berhasil ditambahkan!");
+        JOptionPane.showMessageDialog(this, 
+            "Resep '" + judul + "' berhasil ditambahkan!", 
+            "Berhasil", 
+            JOptionPane.INFORMATION_MESSAGE);
     }
     
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {                                          
         int selectedIndex = jListResep.getSelectedIndex();
         if (selectedIndex == -1) {
-            JOptionPane.showMessageDialog(this, "Pilih resep yang ingin di-update!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, 
+                "Pilih resep yang ingin di-update terlebih dahulu!", 
+                "Peringatan", 
+                JOptionPane.WARNING_MESSAGE);
             return;
         }
         
-        String judul = txtJudul.getText();
-        String bahan = areaBahan.getText();
-        String instruksi = areaInstruksi.getText();
+        String judul = txtJudul.getText().trim();
+        String bahan = areaBahan.getText().trim();
+        String instruksi = areaInstruksi.getText().trim();
+        
+        if (judul.isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "Judul resep tidak boleh kosong!", 
+                "Validasi Error", 
+                JOptionPane.WARNING_MESSAGE);
+            txtJudul.requestFocus();
+            return;
+        }
         
         Resep resepUpdate = new Resep(judul, bahan, instruksi);
         manajer.updateResep(selectedIndex, resepUpdate);
         
         updateList();
         jListResep.setSelectedIndex(selectedIndex); 
-        JOptionPane.showMessageDialog(this, "Resep '" + judul + "' berhasil diperbarui!");
+        JOptionPane.showMessageDialog(this, 
+            "Resep '" + judul + "' berhasil diperbarui!", 
+            "Berhasil", 
+            JOptionPane.INFORMATION_MESSAGE);
     }
     
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {                                         
         int selectedIndex = jListResep.getSelectedIndex();
         if (selectedIndex == -1) {
-            JOptionPane.showMessageDialog(this, "Pilih resep yang ingin dihapus!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, 
+                "Pilih resep yang ingin dihapus terlebih dahulu!", 
+                "Peringatan", 
+                JOptionPane.WARNING_MESSAGE);
             return;
         }
         
@@ -313,19 +448,24 @@ public class AplikasiResepFrame extends javax.swing.JFrame {
         int konfirmasi = JOptionPane.showConfirmDialog(this, 
                 "Anda yakin ingin menghapus resep '" + resep.getJudul() + "'?",
                 "Konfirmasi Hapus", 
-                JOptionPane.YES_NO_OPTION);
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
         
         if (konfirmasi == JOptionPane.YES_OPTION) {
             manajer.hapusResep(selectedIndex);
             updateList();
             clearFields();
-            JOptionPane.showMessageDialog(this, "Resep berhasil dihapus!");
+            JOptionPane.showMessageDialog(this, 
+                "Resep berhasil dihapus!", 
+                "Berhasil", 
+                JOptionPane.INFORMATION_MESSAGE);
         }
     }
     
     private void btnImporActionPerformed(java.awt.event.ActionEvent evt) {                                         
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Buka File JSON");
+        fileChooser.setDialogTitle("Pilih File JSON untuk Diimpor");
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("JSON Files", "json"));
 
         int userSelection = fileChooser.showOpenDialog(this);
         if (userSelection == JFileChooser.APPROVE_OPTION) {
@@ -334,9 +474,15 @@ public class AplikasiResepFrame extends javax.swing.JFrame {
             if (manajer.imporDariJSON(fileToOpen)) {
                 updateList(); 
                 clearFields();
-                JOptionPane.showMessageDialog(this, "Data berhasil diimpor dari " + fileToOpen.getAbsolutePath());
+                JOptionPane.showMessageDialog(this, 
+                    "Data berhasil diimpor dari:\n" + fileToOpen.getName(), 
+                    "Impor Berhasil", 
+                    JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Gagal mengimpor data.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, 
+                    "Gagal mengimpor data dari file.\nPastikan format file benar.", 
+                    "Impor Gagal", 
+                    JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -344,16 +490,28 @@ public class AplikasiResepFrame extends javax.swing.JFrame {
     private void btnEksporActionPerformed(java.awt.event.ActionEvent evt) {                                          
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Simpan sebagai File JSON");
-        fileChooser.setSelectedFile(new File("resep-saya.json")); 
+        fileChooser.setSelectedFile(new File("resep-masakan.json"));
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("JSON Files", "json"));
 
         int userSelection = fileChooser.showSaveDialog(this);
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File fileToSave = fileChooser.getSelectedFile();
             
+            // Pastikan ekstensi .json
+            if (!fileToSave.getName().endsWith(".json")) {
+                fileToSave = new File(fileToSave.getAbsolutePath() + ".json");
+            }
+            
             if (manajer.eksporKeJSON(fileToSave)) {
-                JOptionPane.showMessageDialog(this, "Data berhasil diekspor ke " + fileToSave.getAbsolutePath());
+                JOptionPane.showMessageDialog(this, 
+                    "Data berhasil diekspor ke:\n" + fileToSave.getName(), 
+                    "Ekspor Berhasil", 
+                    JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Gagal mengekspor data.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, 
+                    "Gagal mengekspor data ke file.", 
+                    "Ekspor Gagal", 
+                    JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -362,29 +520,13 @@ public class AplikasiResepFrame extends javax.swing.JFrame {
         clearFields();
     }
     
-    
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
-            // <-- BAGIAN INI SAYA UBAH SEDIKIT AGAR LEBIH SIMPLE & MODERN
-            // Menggunakan System Look and Feel (tampilan Windows/macOS)
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AplikasiResepFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AplikasiResepFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AplikasiResepFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(AplikasiResepFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AplikasiResepFrame().setVisible(true);
