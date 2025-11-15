@@ -1,12 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 
-/**
- *
- * @author Rehan
- */
 public class AplikasiResepFrame extends javax.swing.JFrame {
 
     /**
@@ -25,17 +17,158 @@ public class AplikasiResepFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jListResep = new javax.swing.JList<>();
+        jLabel1 = new javax.swing.JLabel();
+        txtJudul = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        areaBahan = new javax.swing.JTextArea();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        areaInstruksi = new javax.swing.JTextArea();
+        btnTambah = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        btnHapus = new javax.swing.JButton();
+        btnImpor = new javax.swing.JButton();
+        btnEkspor = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        btnClear = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Aplikasi Resep Masakan");
+
+        jScrollPane1.setViewportView(jListResep);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setText("Judul Resep:");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setText("Bahan-bahan:");
+
+        areaBahan.setColumns(20);
+        areaBahan.setRows(5);
+        jScrollPane2.setViewportView(areaBahan);
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setText("Instruksi:");
+
+        areaInstruksi.setColumns(20);
+        areaInstruksi.setRows(5);
+        jScrollPane3.setViewportView(areaInstruksi);
+
+        btnTambah.setText("Tambah Resep Baru");
+        btnTambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahActionPerformed(evt);
+            }
+        });
+
+        btnUpdate.setText("Update Resep Terpilih");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+
+        btnHapus.setText("Hapus Resep Terpilih");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
+
+        btnImpor.setText("Impor ");
+        btnImpor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImporActionPerformed(evt);
+            }
+        });
+
+        btnEkspor.setText("Ekspor ");
+        btnEkspor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEksporActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setText("Daftar Resep");
+
+        btnClear.setText("Clear Form");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnTambah)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnUpdate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnHapus))
+                    .addComponent(txtJudul)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane3)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnClear))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnImpor, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEkspor, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(103, 103, 103)))
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel4)
+                    .addComponent(btnClear))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtJudul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnTambah)
+                            .addComponent(btnUpdate)
+                            .addComponent(btnHapus))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnImpor)
+                            .addComponent(btnEkspor)))
+                    .addComponent(jScrollPane1))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
@@ -77,5 +210,22 @@ public class AplikasiResepFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea areaBahan;
+    private javax.swing.JTextArea areaInstruksi;
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnEkspor;
+    private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnImpor;
+    private javax.swing.JButton btnTambah;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JList<Resep> jListResep;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextField txtJudul;
     // End of variables declaration//GEN-END:variables
 }

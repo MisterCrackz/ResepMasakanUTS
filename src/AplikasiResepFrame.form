@@ -233,7 +233,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnImpor">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Impor JSON"/>
+        <Property name="text" type="java.lang.String" value="Impor "/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnImporActionPerformed"/>
@@ -245,7 +245,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btnEkspor">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Ekspor JSON"/>
+        <Property name="text" type="java.lang.String" value="Ekspor "/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEksporActionPerformed"/>
