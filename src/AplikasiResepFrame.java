@@ -1,11 +1,99 @@
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.io.File;
+import java.util.ArrayList;
 
 public class AplikasiResepFrame extends javax.swing.JFrame {
+
+    // <-- BAGIAN INI HILANG (Variabel untuk Controller & JList Model)
+    private ManajemenResep manajer;
+    private DefaultListModel<Resep> listModel;
 
     /**
      * Creates new form AplikasiResepFrame
      */
     public AplikasiResepFrame() {
         initComponents();
+        
+        // <-- BAGIAN INI HILANG (Logika Inisialisasi Kustom)
+        // 1. Buat Manajer (Controller)
+        manajer = new ManajemenResep();
+        
+        // 2. Siapkan model untuk JList
+        listModel = new DefaultListModel<>();
+        jListResep.setModel(listModel); // Hubungkan listModel ke jListResep
+        
+        // 3. Matikan tombol Update/Hapus (UX yang baik)
+        btnUpdate.setEnabled(false);
+        btnHapus.setEnabled(false);
+
+        // 4. Tambahkan EVENT LISTENER untuk JList
+        // Ini akan "mendengar" setiap kali kita mengklik item di daftar
+        jListResep.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    // Panggil method helper kita
+                    jListResepValueChanged();
+                }
+            }
+        });
+        
+        // 5. Atur Window di tengah layar
+        this.setLocationRelativeTo(null);
+    }
+    
+    // <-- SEMUA METHOD HELPER DI BAWAH INI HILANG -->
+    
+    /**
+     * Dipanggil saat item di JList diklik.
+     * Tugas: Ambil data resep yg diklik, tampilkan di field kanan.
+     */
+    private void jListResepValueChanged() {
+        int selectedIndex = jListResep.getSelectedIndex();
+        
+        if (selectedIndex != -1) { // Jika ada item yg dipilih
+            Resep resepTerpilih = listModel.getElementAt(selectedIndex);
+            
+            // Masukkan datanya ke text field
+            txtJudul.setText(resepTerpilih.getJudul());
+            areaBahan.setText(resepTerpilih.getBahan());
+            areaInstruksi.setText(resepTerpilih.getInstruksi());
+            
+            // Aktifkan tombol Update & Hapus
+            btnUpdate.setEnabled(true);
+            btnHapus.setEnabled(true);
+        } else {
+            // Jika tidak ada yg dipilih (misal setelah hapus)
+            btnUpdate.setEnabled(false);
+            btnHapus.setEnabled(false);
+        }
+    }
+    
+    /**
+     * Tugas: Mengosongkan semua field input.
+     */
+    private void clearFields() {
+        txtJudul.setText("");
+        areaBahan.setText("");
+        areaInstruksi.setText("");
+        jListResep.clearSelection(); // Hapus seleksi di JList
+    }
+
+    /**
+     * Tugas: Sinkronkan JList dengan data terbaru dari 'Manajer'.
+     */
+    private void updateList() {
+        listModel.clear(); // 1. Kosongkan JList
+        
+        // 2. Minta data terbaru ke Manajer
+        ArrayList<Resep> daftar = manajer.getDaftarResep();
+        
+        // 3. Isi JList dengan data baru
+        for (Resep r : daftar) {
+            listModel.addElement(r);
+        }
     }
 
     /**
@@ -177,6 +265,104 @@ public class AplikasiResepFrame extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        String judul = txtJudul.getText();
+        String bahan = areaBahan.getText();
+        String instruksi = areaInstruksi.getText();
+        
+        if (judul.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Judul resep tidak boleh kosong!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        Resep resepBaru = new Resep(judul, bahan, instruksi);
+        manajer.tambahResep(resepBaru);
+        
+        updateList(); 
+        clearFields(); 
+        JOptionPane.showMessageDialog(this, "Resep '" + judul + "' berhasil ditambahkan!");
+    }
+    
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        int selectedIndex = jListResep.getSelectedIndex();
+        if (selectedIndex == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih resep yang ingin di-update!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        String judul = txtJudul.getText();
+        String bahan = areaBahan.getText();
+        String instruksi = areaInstruksi.getText();
+        
+        Resep resepUpdate = new Resep(judul, bahan, instruksi);
+        manajer.updateResep(selectedIndex, resepUpdate);
+        
+        updateList();
+        jListResep.setSelectedIndex(selectedIndex); 
+        JOptionPane.showMessageDialog(this, "Resep '" + judul + "' berhasil diperbarui!");
+    }
+    
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        int selectedIndex = jListResep.getSelectedIndex();
+        if (selectedIndex == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih resep yang ingin dihapus!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        Resep resep = listModel.getElementAt(selectedIndex);
+        int konfirmasi = JOptionPane.showConfirmDialog(this, 
+                "Anda yakin ingin menghapus resep '" + resep.getJudul() + "'?",
+                "Konfirmasi Hapus", 
+                JOptionPane.YES_NO_OPTION);
+        
+        if (konfirmasi == JOptionPane.YES_OPTION) {
+            manajer.hapusResep(selectedIndex);
+            updateList();
+            clearFields();
+            JOptionPane.showMessageDialog(this, "Resep berhasil dihapus!");
+        }
+    }
+    
+    private void btnImporActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Buka File JSON");
+
+        int userSelection = fileChooser.showOpenDialog(this);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToOpen = fileChooser.getSelectedFile();
+            
+            if (manajer.imporDariJSON(fileToOpen)) {
+                updateList(); 
+                clearFields();
+                JOptionPane.showMessageDialog(this, "Data berhasil diimpor dari " + fileToOpen.getAbsolutePath());
+            } else {
+                JOptionPane.showMessageDialog(this, "Gagal mengimpor data.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
+    private void btnEksporActionPerformed(java.awt.event.ActionEvent evt) {                                          
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Simpan sebagai File JSON");
+        fileChooser.setSelectedFile(new File("resep-saya.json")); 
+
+        int userSelection = fileChooser.showSaveDialog(this);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            
+            if (manajer.eksporKeJSON(fileToSave)) {
+                JOptionPane.showMessageDialog(this, "Data berhasil diekspor ke " + fileToSave.getAbsolutePath());
+            } else {
+                JOptionPane.showMessageDialog(this, "Gagal mengekspor data.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        clearFields();
+    }
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -184,12 +370,9 @@ public class AplikasiResepFrame extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
+            // <-- BAGIAN INI SAYA UBAH SEDIKIT AGAR LEBIH SIMPLE & MODERN
+            // Menggunakan System Look and Feel (tampilan Windows/macOS)
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(AplikasiResepFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
